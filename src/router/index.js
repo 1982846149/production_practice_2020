@@ -3,6 +3,9 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter)
 const loginviews = ()=>import("../views/login/loginviews")
+const Mainview =()=>import("../views/main/Mainview")
+const Statistic = ()=>import("../views/main/statistic/Statistic")
+const Order = ()=>import("../views/main/order/Order")
 const routes = [
   {
     path:"",
@@ -11,6 +14,21 @@ const routes = [
   {
     path:"/login",
     component:loginviews,
+  },
+  {
+    path:"/main",
+    component:Mainview,
+    children:[
+      {
+        path:"order",
+        component:Order
+      },
+      {
+        path:"statistic",
+        component:Statistic
+      }
+
+    ]
   }
   
 ]

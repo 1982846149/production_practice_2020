@@ -35,7 +35,8 @@
     methods:{
       sendForm(){
         console.log(this.login_form.username);
-        console.log(this.login_form.password)
+        console.log(this.login_form.password);
+        this.$router.push("/main");
       }
     }
   }
