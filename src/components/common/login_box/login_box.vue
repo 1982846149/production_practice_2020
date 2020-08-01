@@ -13,7 +13,7 @@
         <Input type="password"  prefix="ios-lock"  size="large" password v-model="login_form.password" placeholder="请输入密码"/>
       </FormItem>
      <FormItem>
-          <Button size="large"  long @click="sendForm"  type="primary" >登陆</Button>
+          <Button size="large"  long  @click="sendForm"  type="primary" >登陆</Button>
    </FormItem>
     </Form>
   </div>
