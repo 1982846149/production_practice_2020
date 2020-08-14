@@ -10,25 +10,67 @@
         <Rate disabled allow-half v-model="row.score"> </Rate>
         
       </template>
-      <template slot="action">
-        <Button  type="info" >详情</Button>
+      <template slot-scope="{index}" slot="action">
+        <Button  type="info"  @click="showdetails(index)">详情</Button>
       </template>
       
     </Table>
+    
+
   
     <Page  class="page" :total="dataCount" :page-size="pageSize" show-total @on-change="changepage"></Page>
-
+  
+    <Modal width="370" v-model="showModal" title="详情" @on-ok="ok" @on-cancer="ok">
+     <p class="center_contain"><span class="modal-center">订单号：{{Orderdata[currentshowindex].orderid}}</span> <span class="modal-center">日期：{{Orderdata[currentshowindex].date}}</span></p>
+      <p class="bigfont">客户：<span class="modal-customer">{{Orderdata[currentshowindex].customer}}</span></p>
+     <br>
+      <p class="details">订单记录：</p>
+      
+      <p class="detail_list" style="text-indent: 1em;" v-for="(item,index) in Orderdata[currentshowindex].describe" :key="index"> <span class="type">{{item.type}}</span>   <span class="kind">{{item.kind}}杯</span>    <span class="num">X{{item.num}}</span></p>
+      <br>
+      <p class="cost">￥{{Orderdata[currentshowindex].cost}}元</p>
+      
+    </Modal>
+    
+    <Modal footer-hide width="370" v-model="showSearch" title="搜索结果">
+      <p class="center_contain"><span class="modal-center">订单号：{{SearchResult[SearchIndex].orderid}}</span> <span class="modal-center">日期： {{Orderdata[currentshowindex].date}}</span></p>
+      <p class="bigfont">客户：<span class="modal-customer">{{SearchResult[SearchIndex].customer}}</span></p>
+      <p class="bigfont">评分：<Rate disabled v-model="SearchResult[SearchIndex].score"></Rate></p>
+      <p class="details">订单记录：</p>
+      <div class="search_area">
+      <p class="detail_list" style="text-indent: 1em;" v-for="(item,index) in SearchResult[SearchIndex].describe" :key="index"> <span class="type">{{item.type}}</span>   <span class="kind">{{item.kind}}杯</span>    <span class="num">X{{item.num}}</span></p>
+      </div>
+        <p class="cost">￥{{SearchResult[SearchIndex].cost}}元</p>
+      <br>
+     <Button  class="btnleft" type="text" :disabled="SearchIndex===0" @click="last()">上一条</Button>
+      <Button class="btnnext " type="text" :disabled="SearchIndex===SearchResult.length-1" @click="next()">下一条</Button>
+    </Modal>
+    
   </div>
   </div>
 </template>
+
 
 <script>
   export default {
     name: "ShowOrder",
     data(){
       return{
+        SearchResult:[
+          {
+            orderid: "20",
+            date:"8/02 10:00",
+            customer:"zq",
+            cost: 65,
+            score:3.5,
+          },
+        ],
+        showSearch:false,
+        SearchIndex:0,
         dataCount:0,
         pageSize:11,
+        currentshowindex:0,
+        showModal:false,
         columns:[
           {
             title:"订单号",
@@ -69,30 +111,65 @@
         ],
         
         axiosdata:[
+         
           {
-            orderid: "13",
-            date:"8-02 10:00",
+            orderid: "18",
+            date:"8/02 10:00",
+            customer:"zq",
+            cost: 65,
+            score:3.5,
+            describe:[{type:"美式咖啡", num:2 ,kind:"大"},{type:"美式111咖啡", num:2 ,kind:"小"}],
+  
+          },
+          {
+            orderid: "19",
+            date:"8/02 10:00",
+            customer:"syc",
+            cost: 65,
+            score:3.5,
+          },
+          {
+            orderid: "20",
+            date:"8/02 10:00",
+            customer:"zq",
+            cost: 35,
+            score:3.5,
+            describe:[{type:"美式111咖啡", num:2 ,kind:"小"}],
+  
+          },
+         
+          {
+            orderid: "17",
+            date:"8/02 10:00",
             customer:"kgb51111",
             cost: 65,
             score:3.5,
           },
           {
             orderid: "13",
-            date:"8-02 10:00",
+            date:"8/02 10:00",
+            customer:"kgb51111",
+            cost: 65,
+            score:3.5,
+            describe:[{type:"美式咖啡", num:2 ,kind:"大"},{type:"美式111咖啡", num:2 ,kind:"小"}],
+    },
+          {
+            orderid: "13",
+            date:"8/02 10:00",
             customer:"kgb51111",
             cost: 65,
             score:3.5,
           },
           {
             orderid: "13",
-            date:"8-02 10:00",
+            date:"8/02 10:00",
             customer:"kgb51111",
             cost: 65,
             score:3.5,
           },
           {
             orderid: "13",
-            date:"8-02 10:00",
+            date:"8/02 10:00",
             customer:"kgb51111",
             cost: 65,
             score:3.5,
@@ -102,70 +179,72 @@
           {
             orderid: "13",
             date:"8-02 10:00",
-            customer:"kgb51111",
+            customer:"kgb5111",
             cost: 65,
             score:3.5,
           },{
           orderid: "13",
-          date:"8-02 10:00",
-          customer:"kgb51111",
+          date:"8/02 10:00",
+          customer:"kgb5111",
           cost: 65,
           score:3.5,
         },
           {
             orderid: "13",
-            date:"8-02 10:00",
+            date:"8/02 10:00",
             customer:"kgb51111",
             cost: 65,
             score:3.5,
-          },{
+          },
+          {
           orderid: "13",
-          date:"8-02 10:00",
+          date:"8/02 10:00",
           customer:"kgb51111",
           cost: 65,
           score:3.5,
         },
           {
             orderid: "12",
-            date:"8-02 09:00",
+            date:"8/02 09:00",
             customer:"kgb51111",
             cost: 75,
             score:3.5,
           },
           {
             orderid: "11",
-            date:"8-01 09:00",
+            date:"8/01 09:00",
             customer:"kgb51111",
             cost: 75,
             score:3.5,
           },
           {
             orderid: "13",
-            date:"8-02 10:00",
+            date:"8/02 10:00",
             customer:"kgb51111",
             cost: 65,
             score:3.5,
           },{
             orderid: "13",
-            date:"8-02 10:00",
+            date:"8/02 10:00",
             customer:"kgb51111",
             cost: 65,
             score:3.5,
           },
           {
             orderid: "12",
-            date:"8-02 09:00",
+            date:"8/02 09:00",
             customer:"kgb51111",
             cost: 75,
             score:3.5,
           },
           {
             orderid: "11",
-            date:"8-01 09:00",
+            date:"8/01 09:00",
             customer:"kgb51111",
             cost: 75,
             score:3.5,
-          },],
+          }
+          ],
         
         Orderdata:[],
       }
@@ -174,6 +253,20 @@
       this.pushoriginorderdata()
     },
     methods:{
+      next(){
+        console.log(this.SearchResult[this.SearchIndex])
+        console.log("qian")
+        this.SearchIndex = this.SearchIndex+1;
+        console.log("hou");
+        console.log(this.SearchIndex)
+        console.log(this.SearchResult[this.SearchIndex])
+  
+  
+      },
+      last(){
+        console.log(this.SearchResult[this.SearchIndex])
+        this.SearchIndex = this.SearchIndex - 1;
+      },
      
       pushoriginorderdata(){
         console.log("一个函数罢了")
@@ -186,19 +279,82 @@
            this.Orderdata.push(...this.axiosdata.slice(0, this.pageSize));
          }
          console.log(this.Orderdata)
-      }, search(res){
-        console.log(res)
+      },
      
-    
+      search(res){
+        this.SearchIndex = 0;
+        console.log(res);
+        const result = [];
+        let resindex = 0;
+         resindex = this.axiosdata.findIndex( item =>{return item.orderid ===res});
+        if (resindex!=-1)
+        {
+          result.push(resindex);
+          console.log(result)
+      //    return result;
+        }
+        else{
+          console.log("不是orderid")
+          let len = this.axiosdata.length;
+          console.log(len)
+         let pos = 0;
+          console.log(this.axiosdata.slice(3))
+       //  let array =[];
+          while (pos<len) {
+         //   array = this.axiosdata.slice(pos);
+            resindex = this.axiosdata.slice(pos).findIndex(item => {
+              return item.customer === res
+            });
+            console.log()
+            if (resindex!=-1){
+              console.log("resindex="+resindex)
+              result.push(resindex+pos);
+              pos = resindex+pos+1;
+              console.log(pos);
+            }
+            else{
+              break;
+            }
+          }
+         
+        }
+        console.log(result);
+        this.SearchResult = [];
+        for ( let item of result){
+          console.log(item);
+          this.SearchResult.push(this.axiosdata[item]);
+        }
+        console.log(this.SearchResult)
+        if (this.SearchResult.length ==0){
+          this.$Message['error']({background:true,
+          content:"未查找到订单记录"
+          })
+        }
+        else{
+          this.showSearch = true;
+        }
+      },
+      
+      ok(){
+        this.showModal=false;
       },
       
       
       
       changepage(index){
+        this.currentshowindex = 0;
         let _start = (index-1)*this.pageSize;
         let _end = (index)*this.pageSize;
-        this.Orderdata = this.axiosdata.slice(_start,_end);
+        this.Orderdata = [];
+        this.Orderdata.push(...this.axiosdata.slice(_start,_end));
       },
+      
+      showdetails(index){
+        console.log(index);
+        console.log(this.Orderdata[index].cost);
+        this.currentshowindex = index;
+        this.showModal = true;
+      }
     },
   }
 </script>
@@ -224,5 +380,61 @@
   bottom:3px;
   right: 60px;
 }
-
+.modal-center{
+  margin: 5px;
+  font-size: 18px;
+  flex: 1;
+}
+  .center_contain{
+    display: flex;
+  }
+  .bigfont{
+    font-size: 18px;
+    margin: 5px;
+  }
+  .details{
+    font-size: 18px;
+    margin: 5px;
+  }
+  .detail_list{
+    margin: 8px;
+    font-size: 20px;
+    
+  }
+  
+  .modal-customer{
+    font-size: 20px;
+    
+  }
+  .search_area{
+    height:170px;
+  }
+  .type{
+   color: blue;
+   
+  }
+  .num{
+    position: absolute;
+     right:30px;
+  }
+  .kind{
+    position: absolute;
+    left:180px
+  }
+  .cost{
+    color: green;
+    text-align: right;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .btnnext{
+    position: relative;
+    left:150px
+    
+  }
+  .btnleft{
+    position: relative;
+    left:25px;
+  }
+  
 </style>

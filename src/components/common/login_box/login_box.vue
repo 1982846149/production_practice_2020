@@ -5,11 +5,11 @@
 <span>星X克门店管理系统</span>
 </div>
   <div>
-    <Form :model="login_form">
-      <FormItem prop="username">
-        <Input prefix="ios-person" size="large" type="text" v-model="login_form.username" placeholder="请输入工号"/>
+    <Form ref="form" :model="login_form" :rules="login_rules">
+      <FormItem prop="id">
+        <Input prefix="ios-person" size="large" type="text" v-model="login_form.id" placeholder="请输入工号"/>
       </FormItem>
-      <FormItem>
+      <FormItem prop="password">
         <Input type="password"  prefix="ios-lock"  size="large" password v-model="login_form.password" placeholder="请输入密码"/>
       </FormItem>
      <FormItem>
@@ -22,21 +22,43 @@
 </template>
 
 <script>
+  import {dologin} from "../../../network/login"
   export default {
     name: "login",
     data(){
       return {
         login_form:{
-          username:"",
+          id:"",
           password:"",
+        },
+        login_rules:{
+          id:[
+            {required:true,message:"工号不能为空",trigger:"blur"},],
+          password:[
+              {
+            required:true,message:"密码不能为空",trigger:"blur"},]
         }
       }
     },
     methods:{
       sendForm(){
-        console.log(this.login_form.username);
-        console.log(this.login_form.password);
-        this.$router.push("/main");
+        dologin(this.login_form).then(res => {
+          console.log(res);
+          console.log(res.data)
+          let code = res.data.code;
+          if(code===200) {
+            this.$Message.success("成功登陆");
+            this.$store.commit("Set_token",res.headers.authorization);
+            this.$store.commit("Set_Uinfo",res.data.data.username);
+            console.log(this.$store.state.token);
+            this.$router.replace("/main");
+          }
+          else{
+            this.$Message.error("用户名或密码错误");
+          }
+        }).catch( err =>{
+          console.log(err)
+        })
       }
     }
   }

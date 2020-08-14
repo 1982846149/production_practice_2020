@@ -2,7 +2,7 @@
   <div>
     <Card class="pie">
       <p slot="title">营业额情况</p>
-      <a href="#" slot="extra" >
+      <a @click="refresh" slot="extra" >
         <Icon size="large" type="md-refresh"></Icon>
         刷新
       </a>
@@ -20,7 +20,7 @@
             <List size="large" class="list-item">
               <ListItem><span >今日营业额:{{today}}元</span></ListItem>
               <ListItem>昨日营业额: {{lastday}}元</ListItem>
-              <ListItem>今日单笔最高金额:xxxx</ListItem>
+              <ListItem>今日单笔最高:{{largest}}元</ListItem>
             </List>
          </div>
           
@@ -40,7 +40,13 @@
       return {
         lastday:10000,
         today:12571,
+        largest:1000,
       }
+    },methods:{
+      refresh(){
+        console.log("刷新营业额");
+      }
+      
     },
     computed:{
       message(){

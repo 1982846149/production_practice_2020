@@ -21,7 +21,7 @@
         <Layout :style="{padding: '0px 5px 0px', margin: '5px 0'}">
           
           <Content :style="{padding: '0px,0px,0px',margin: '0px', minHeight: '40vh'}">
-            <router-view></router-view>
+            <router-view ></router-view>
             
           </Content>
         </Layout>
@@ -39,6 +39,7 @@
       Horizontalbar,
     Navbar,
     
-    }
+    },
+
   }
 </script>

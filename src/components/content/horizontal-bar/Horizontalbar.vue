@@ -3,10 +3,14 @@
     <Menu mode="horizontal" theme="dark">
       <div class="layout-logo"></div>
       <div class="layout-navi">
-        <MenuItem  name="userid" class="navi-item">
+        <MenuItem  name="userid" class="navi-item1">
           <Icon>
           </Icon>
-          账号（需要传数据）
+       {{this.$store.state.Uinfo}}
+        </MenuItem>
+        <MenuItem   class="navi-item2">
+          <span  @click="Logoff">注销</span>
+         
         </MenuItem>
       </div>
 
@@ -16,7 +20,14 @@
 
 <script>
   export default {
-    name: "Horizontalbar"
+    name: "Horizontalbar",
+    methods:{
+      Logoff(){
+        console.log("点击了")
+        this.$store.commit("Clear_Token_and_Uinfo");
+        this.$router.replace("/login");
+      }
+    }
   }
 </script>
 
@@ -26,8 +37,11 @@
     margin: 0 20px 0 auto;
     position: relative;
   }
-  .navi-item{
+  .navi-item1{
     left:195px;
+  }
+  .navi-item2{
+    left:255px;
   }
   .layout-logo{
     width: 100px;

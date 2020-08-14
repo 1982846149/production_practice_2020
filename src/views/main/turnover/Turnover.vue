@@ -17,13 +17,23 @@
   import OPchart from "../../../components/content/orderpiechart/OPchart";
   import Linechart from "../../../components/content/linechart/Linechart";
   import Barchart from "../../../components/content/barchart/Barchart";
+  import {request_turnover} from "../../../network/turnover_data";
   export default {
     name: "Order",
     components:{
       OPchart,
       Linechart,
       Barchart,
+    },
+    created() {
+      request_turnover().then( res =>{
+        console.log(res);
+      }
+      ).catch( error =>{
+        console.log(error);
+      })
     }
+  
   }
 </script>
 
