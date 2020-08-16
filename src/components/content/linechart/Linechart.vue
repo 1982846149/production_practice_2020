@@ -15,24 +15,36 @@
     components:{
       VeLine,
     },
-    data() {
+    data(){
         return {
           extend:{
             'xAxis.0.axisLabel.fontSize': 16,
             'yAxis.0.axisLabel.fontSize':16
           },
           chartData: {
-            columns: ['type', 'today', 'lastday'],
-            rows: [
-              {'type': '饮品', 'today': 70, 'lastday': 67},
-              {'type': '食品', 'today': 15, 'lastday': 16},
-              {'type': '咖啡豆', 'today': 5, 'lastday': 8},
-              {'type': '咖啡杯', 'today': 6, 'lastday': 9},
-              {'type': '其它', 'today': 17, 'lastday': 14},
-            ]
-          }
+            columns: ['type', '今日', '昨日'],
+            rows: []
+          },
+          
+        }
+      },
+    props:{
+      Linechart_data:{
+        type:Array,
+        default(){
+          return [];
         }
       }
+    
+    },
+    watch:{
+      Linechart_data(newVal,oldVal){
+        this.chartData.rows = this.Linechart_data;
+        console.log("line_watch",newVal,oldVal);
+      }
+    }
+    
+    
     
   }
 </script>

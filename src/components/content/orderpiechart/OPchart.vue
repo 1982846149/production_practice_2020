@@ -38,22 +38,53 @@
     name: "OPchart",
     data(){
       return {
-        lastday:10000,
-        today:12571,
-        largest:1000,
+  
       }
-    },methods:{
-      refresh(){
-        console.log("刷新营业额");
-      }
-      
     },
+    watch:{
+      OPchart_data:function(newValue){
+       this.OPchart_data = newValue;
+      
+      },
+  
+    
+    },
+  
+   
+    methods: {
+      refresh() {
+      //  console.log("刷新营业额");
+      //  console.log(this.OPchart_data);
+        
+        this.$emit("refresh");
+      },
+    },
+      props:{
+        OPchart_data:{
+          type: Object,
+          default(){
+            return {};
+          }
+        }
+      },
+    
     computed:{
+      lastday(){
+        return this.OPchart_data.lastday;
+      },
+      today(){
+        return this.OPchart_data.today;
+      },
+      largest(){
+        return this.OPchart_data.largest;
+      },
       message(){
+    //    return this.today>=this.lastday?"增长":"减少"
         return this.today>=this.lastday?"增长":"减少"
       },
       percentage(){
-        return this.today>=this.lastday?(this.today/this.lastday - 1).toFixed(3) *100: (1- this.today/this.lastday).toFixed(3)*100
+       return this.today>=this.lastday?((this.today/this.lastday - 1)*100).toFixed(2): (((1-((this.today)/this.lastday))*100).toFixed(2))
+      // return 22.0;
       },
       show_color(){
         return this.today>=this.lastday?"#5cb85c":"#ff5500"

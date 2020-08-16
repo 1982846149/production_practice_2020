@@ -7,3 +7,17 @@ export function request_turnover() {
   })
   
 }
+export function request_turnover_linerows(){
+  return request({
+    method:"get",
+    url:"order/linerows"
+  })
+  
+}
+
+export function request_turnover_barrows(){
+  return request({
+    method:"get",
+    url:"order/barrows"
+  })
+}

@@ -12,7 +12,7 @@ export function request(config) {
   
   instance.interceptors.request.use( config =>{
     if (localStorage.getItem("Authorization")){
-      config.headers.Authorization= localStorage.getItem("Authorization");
+      config.headers.AD= localStorage.getItem("Authorization");
     }
     return config;
   }, error => {

@@ -15,6 +15,7 @@
     },
     data(){
       return{
+        
        
         chartSettings :{
           axisSite: { right: ['会员率',"好评率"] },
@@ -23,17 +24,33 @@
         },
         chartData: {
           columns: ['日期', '营业额',"会员率","好评率"],
-          rows: [
-            { '日期': '7.21', '营业额': 1393, '会员率': 0.64, '好评率': 0.32 },
-            { '日期': '7.22', '营业额': 3530, '会员率': 0.78, '好评率': 0.26 },
-            { '日期': '7.23', '营业额': 2923, '会员率': 0.76, '好评率': 0.76 },
-            { '日期': '7.24', '营业额': 1723, '会员率': 0.74, '好评率': 0.49 },
-            { '日期': '7.25', '营业额': 3792, '会员率': 0.75, '好评率': 0.323 },
-            { '日期': '7.26', '营业额': 4593, '会员率': 0.78, '好评率': 0.78 }
-          ]
+          rows:[],
         }
       }
-    }
+    },
+    props:{
+      Barchart_data:{
+        type:Array,
+        default(){
+          return [];
+        }
+      },
+    },
+    watch:{
+      Barchart_data(newval,oldval){
+         console.log("bar_watch",newval,oldval);
+          this.chartData.rows = this.Barchart_data;
+      //    console.log("子组件data"+this.chartData.rows);
+        console.log(this.chartData.rows);
+        }
+        
+      },
+  //    mounted(){
+  //    this.chartData.rows=this.Barchart_data;
+  //      console.log("mounted",this.chartData.rows);
+
+   //   }
+    
   }
 </script>
 
