@@ -1,6 +1,6 @@
 <template>
-  <div>
-  <Input  class="input" search placeholder="搜索订单" style="width:auto" enter-button @on-search="search"/>
+  <div v-if="Axiosdata.length!==0">
+  <Input  class="input" v-model="s_input" search placeholder="搜索订单"  style="width:auto" enter-button @on-search="search"/>
   <div class="table">
     <Table   disabled-hover	 :columns="columns" :data="Orderdata">
       <template slot-scope="{row}" slot="orderid">
@@ -18,29 +18,29 @@
     
 
   
-    <Page  class="page" :total="dataCount" :page-size="pageSize" show-total @on-change="changepage"></Page>
+    <Page  :current="current" class="page" :total="dataCount" :page-size="pageSize" show-total @on-change="changepage"></Page>
   
-    <Modal width="370" v-model="showModal" title="详情" @on-ok="ok" @on-cancer="ok">
+    <Modal  width="370" v-model="showModal" title="详情" @on-ok="ok" @on-cancer="ok">
      <p class="center_contain"><span class="modal-center">订单号：{{Orderdata[currentshowindex].orderid}}</span> <span class="modal-center">日期：{{Orderdata[currentshowindex].date}}</span></p>
       <p class="bigfont">客户：<span class="modal-customer">{{Orderdata[currentshowindex].customer}}</span></p>
      <br>
       <p class="details">订单记录：</p>
       
-      <p class="detail_list" style="text-indent: 1em;" v-for="(item,index) in Orderdata[currentshowindex].describe" :key="index"> <span class="type">{{item.type}}</span>   <span class="kind">{{item.kind}}杯</span>    <span class="num">X{{item.num}}</span></p>
+      <p class="detail_list" style="text-indent: 1em;" v-for="(item,index) in Orderdata[currentshowindex].describe" :key="index"> <span class="type">{{item.type}}</span>   <span class="kind">{{item.kind}}</span>    <span class="num">X{{item.num}}</span></p>
       <br>
       <p class="cost">￥{{Orderdata[currentshowindex].cost}}元</p>
       
     </Modal>
     
     <Modal footer-hide width="370" v-model="showSearch" title="搜索结果">
-      <p class="center_contain"><span class="modal-center">订单号：{{SearchResult[SearchIndex].orderid}}</span> <span class="modal-center">日期： {{Orderdata[currentshowindex].date}}</span></p>
-      <p class="bigfont">客户：<span class="modal-customer">{{SearchResult[SearchIndex].customer}}</span></p>
-      <p class="bigfont">评分：<Rate disabled v-model="SearchResult[SearchIndex].score"></Rate></p>
+      <p v-if="decide_show_search"  class="center_contain"><span class="modal-center">订单号：{{SearchResult[SearchIndex].orderid}}</span> <span class="modal-center">日期： {{SearchResult[SearchIndex].date}}</span></p>
+      <p  v-if="decide_show_search"  class="bigfont">客户：<span class="modal-customer">{{SearchResult[SearchIndex].customer}}</span></p>
+      <p v-if="decide_show_search"  class="bigfont">评分：<Rate disabled v-model="SearchResult[SearchIndex].score"></Rate></p>
       <p class="details">订单记录：</p>
-      <div class="search_area">
-      <p class="detail_list" style="text-indent: 1em;" v-for="(item,index) in SearchResult[SearchIndex].describe" :key="index"> <span class="type">{{item.type}}</span>   <span class="kind">{{item.kind}}杯</span>    <span class="num">X{{item.num}}</span></p>
+      <div v-if="decide_show_search" class="search_area">
+      <p  class="detail_list" style="text-indent: 1em;" v-for="(item,index) in SearchResult[SearchIndex].describe" :key="index"> <span class="type">{{item.type}}</span>   <span class="kind">{{item.kind}}</span>    <span class="num">X{{item.num}}</span></p>
       </div>
-        <p class="cost">￥{{SearchResult[SearchIndex].cost}}元</p>
+        <p v-if="decide_show_search"  class="cost">￥{{SearchResult[SearchIndex].cost}}元</p>
       <br>
      <Button  class="btnleft" type="text" :disabled="SearchIndex===0" @click="last()">上一条</Button>
       <Button class="btnnext " type="text" :disabled="SearchIndex===SearchResult.length-1" @click="next()">下一条</Button>
@@ -56,6 +56,9 @@
     name: "ShowOrder",
     data(){
       return{
+        decide_show_search: false,
+        current:1,
+        s_input:"",
         SearchResult:[
           {
             orderid: "20",
@@ -110,207 +113,98 @@
          
         ],
         
-        axiosdata:[
-         
-          {
-            orderid: "18",
-            date:"8/02 10:00",
-            customer:"zq",
-            cost: 65,
-            score:3.5,
-            describe:[{type:"美式咖啡", num:2 ,kind:"大"},{type:"美式111咖啡", num:2 ,kind:"小"}],
-  
-          },
-          {
-            orderid: "19",
-            date:"8/02 10:00",
-            customer:"syc",
-            cost: 65,
-            score:3.5,
-          },
-          {
-            orderid: "20",
-            date:"8/02 10:00",
-            customer:"zq",
-            cost: 35,
-            score:3.5,
-            describe:[{type:"美式111咖啡", num:2 ,kind:"小"}],
-  
-          },
-         
-          {
-            orderid: "17",
-            date:"8/02 10:00",
-            customer:"kgb51111",
-            cost: 65,
-            score:3.5,
-          },
-          {
-            orderid: "13",
-            date:"8/02 10:00",
-            customer:"kgb51111",
-            cost: 65,
-            score:3.5,
-            describe:[{type:"美式咖啡", num:2 ,kind:"大"},{type:"美式111咖啡", num:2 ,kind:"小"}],
-    },
-          {
-            orderid: "13",
-            date:"8/02 10:00",
-            customer:"kgb51111",
-            cost: 65,
-            score:3.5,
-          },
-          {
-            orderid: "13",
-            date:"8/02 10:00",
-            customer:"kgb51111",
-            cost: 65,
-            score:3.5,
-          },
-          {
-            orderid: "13",
-            date:"8/02 10:00",
-            customer:"kgb51111",
-            cost: 65,
-            score:3.5,
-          },
-  
-  
-          {
-            orderid: "13",
-            date:"8-02 10:00",
-            customer:"kgb5111",
-            cost: 65,
-            score:3.5,
-          },{
-          orderid: "13",
-          date:"8/02 10:00",
-          customer:"kgb5111",
-          cost: 65,
-          score:3.5,
-        },
-          {
-            orderid: "13",
-            date:"8/02 10:00",
-            customer:"kgb51111",
-            cost: 65,
-            score:3.5,
-          },
-          {
-          orderid: "13",
-          date:"8/02 10:00",
-          customer:"kgb51111",
-          cost: 65,
-          score:3.5,
-        },
-          {
-            orderid: "12",
-            date:"8/02 09:00",
-            customer:"kgb51111",
-            cost: 75,
-            score:3.5,
-          },
-          {
-            orderid: "11",
-            date:"8/01 09:00",
-            customer:"kgb51111",
-            cost: 75,
-            score:3.5,
-          },
-          {
-            orderid: "13",
-            date:"8/02 10:00",
-            customer:"kgb51111",
-            cost: 65,
-            score:3.5,
-          },{
-            orderid: "13",
-            date:"8/02 10:00",
-            customer:"kgb51111",
-            cost: 65,
-            score:3.5,
-          },
-          {
-            orderid: "12",
-            date:"8/02 09:00",
-            customer:"kgb51111",
-            cost: 75,
-            score:3.5,
-          },
-          {
-            orderid: "11",
-            date:"8/01 09:00",
-            customer:"kgb51111",
-            cost: 75,
-            score:3.5,
-          }
-          ],
-        
+
         Orderdata:[],
       }
     },
     created() {
       this.pushoriginorderdata()
+      console.log(1)
+    },
+    
+    props:{
+      Axiosdata:{
+        type:Array,
+        default(){
+          return [];
+        }
+      }
+    },
+    
+    watch:{
+      Axiosdata(){
+       // console.log("axios",newv,oldv)
+        this.pushoriginorderdata();
+      }
     },
     methods:{
+      clear(){
+        this.s_input="";
+      },
+    
       next(){
-        console.log(this.SearchResult[this.SearchIndex])
-        console.log("qian")
+      //  console.log(this.SearchResult[this.SearchIndex])
+      //  console.log("qian")
         this.SearchIndex = this.SearchIndex+1;
-        console.log("hou");
-        console.log(this.SearchIndex)
-        console.log(this.SearchResult[this.SearchIndex])
+     //   console.log("hou");
+  //      console.log(this.SearchIndex)
+     //   console.log(this.SearchResult[this.SearchIndex])
   
   
       },
       last(){
-        console.log(this.SearchResult[this.SearchIndex])
+    //    console.log(this.SearchResult[this.SearchIndex])
         this.SearchIndex = this.SearchIndex - 1;
       },
      
       pushoriginorderdata(){
-        console.log("一个函数罢了")
-         this.dataCount = this.axiosdata.length;
-         console.log(this.dataCount);
+      //  console.log("一个函数罢了")
+         this.dataCount = this.Axiosdata.length;
+     //    console.log(this.dataCount);
          if (this.dataCount <=this.pageSize){
-           this.Orderdata.push(...this.axiosdata);
+           this.Orderdata=[];
+           this.Orderdata.push(...this.Axiosdata);
          }
          else{
-           this.Orderdata.push(...this.axiosdata.slice(0, this.pageSize));
+           this.Orderdata=[];
+           this.Orderdata.push(...this.Axiosdata.slice(0, this.pageSize));
          }
-         console.log(this.Orderdata)
+      //   console.log(this.Orderdata)
       },
      
       search(res){
+        console.log(  typeof(res) )
         this.SearchIndex = 0;
-        console.log(res);
+   //     this.decide_show_search = false;
+     //   console.log(res);
         const result = [];
-        let resindex = 0;
-         resindex = this.axiosdata.findIndex( item =>{return item.orderid ===res});
+        let resindex;
+         resindex = this.Axiosdata.findIndex( item =>{return item.orderid ===res});
         if (resindex!=-1)
         {
           result.push(resindex);
-          console.log(result)
+  //        console.log(result)
       //    return result;
         }
         else{
-          console.log("不是orderid")
-          let len = this.axiosdata.length;
-          console.log(len)
+    //      console.log("不是orderid")
+          let len = this.Axiosdata.length;
+    //      console.log(len)
          let pos = 0;
-          console.log(this.axiosdata.slice(3))
+    //      console.log(this.Axiosdata.slice(3))
        //  let array =[];
           while (pos<len) {
          //   array = this.axiosdata.slice(pos);
-            resindex = this.axiosdata.slice(pos).findIndex(item => {
+            console.log(1111)
+            resindex = this.Axiosdata.slice(pos).findIndex(item => {
               return item.customer === res
             });
-            console.log()
-            if (resindex!=-1){
-              console.log("resindex="+resindex)
+         //   console.log()
+            if (resindex!==-1){
+         //     console.log("resindex="+resindex)
               result.push(resindex+pos);
               pos = resindex+pos+1;
-              console.log(pos);
+     //         console.log(pos);
             }
             else{
               break;
@@ -318,40 +212,48 @@
           }
          
         }
-        console.log(result);
+       console.log("搜索失败"+result);
         this.SearchResult = [];
         for ( let item of result){
-          console.log(item);
-          this.SearchResult.push(this.axiosdata[item]);
+     //     console.log(item);
+          this.SearchResult.push(this.Axiosdata[item]);
         }
         console.log(this.SearchResult)
-        if (this.SearchResult.length ==0){
+        if (this.SearchResult.length ===0){
+        //  this.showSearch =false;
           this.$Message['error']({background:true,
           content:"未查找到订单记录"
           })
+         this.showSearch =false;
+          this.decide_show_search = false;
         }
         else{
+          console.log("失败+成功后",this.SearchResult.length)
           this.showSearch = true;
+          this.decide_show_search = true;
         }
+        
+        console.log("decide",this.decide_show_search)
+        console.log("show",this.showSearch)
       },
       
       ok(){
         this.showModal=false;
       },
       
-      
-      
       changepage(index){
+        this.current=index;
         this.currentshowindex = 0;
         let _start = (index-1)*this.pageSize;
         let _end = (index)*this.pageSize;
         this.Orderdata = [];
-        this.Orderdata.push(...this.axiosdata.slice(_start,_end));
+        this.Orderdata.push(...this.Axiosdata.slice(_start,_end));
+      //  console.log("搜索失败后",this.Orderdata)
       },
       
       showdetails(index){
-        console.log(index);
-        console.log(this.Orderdata[index].cost);
+    //    console.log(index);
+    //    console.log(this.Orderdata[index].cost);
         this.currentshowindex = index;
         this.showModal = true;
       }
