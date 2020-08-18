@@ -1,7 +1,7 @@
 <template>
   <Card class="card" padding="0">
     <h2 style="font-family: '楷体',serif;" slot="title">{{goodName}}</h2>
-    <img class="image" height="210" width="230" :src="require('../../../assets/img/goodshow/'+Imagesrc+'.jpg')" />
+    <img class="image" height="210" width="230" :src="'http://'+Imagesrc" />
    <div class="textarea">
      <h3>商品描述:</h3>
     <p class="pp" style="text-indent: 1em;">{{gooddescribe}}</p>

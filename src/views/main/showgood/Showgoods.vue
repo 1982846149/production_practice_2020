@@ -1,12 +1,13 @@
 <template>
-  <tabs>
-    <TabPane label="饮品">
-    <goodsview :goods-sources="goodsalldata.drink"></goodsview>
-    </TabPane>
-
-    <TabPane label="食品">
+ 
+  <tabs v-if="decide_show">
     
+    <TabPane  v-for="(value,key,index) in goodsalldata" :label="key" :key="index">
+      <goodsview :goods-sources="value"></goodsview>
     </TabPane>
+  
+ 
+
   </tabs>
 
 </template>
@@ -14,7 +15,9 @@
 <script>
  // import goodcard from "../../../components/content/goodcard/goodcard";
  import goodsview from "../../../components/content/goodsview/goodsview";
-  export default {
+ import {request_goods_all_data} from "../../../network/goods_data";
+
+ export default {
     name: "Showgoods",
     components:{
      // goodcard
@@ -22,46 +25,39 @@
     },
     data(){
       return{
-        goodsalldata:{
-          drink:[
-            {
-              gname:"美式咖啡",
-              gdes:"这是美式咖啡的描述这是美式咖啡的描述这是美式咖啡的描述这是美式咖啡的描述这是美式咖啡的描述这是美式咖啡的描述",
-              gprice:"31/34/37",
-              gimg:"coffeetemplate"
-            },
-            {
-              gname:"美式咖啡2",
-              gdes:"这是美式咖啡2的描述这是美式咖啡2的描述这是美式咖啡2的描述这是美式咖啡2的描述这是美式咖啡2的描述这是美式咖啡的描述",
-              gprice:"32/35/38",
-              gimg:"coffeetemplate"
-            },
-            {
-              gname:"美式咖啡3",
-              gdes:"这是美式咖啡3的描述这是美式咖啡3的描述这是美式咖啡3的描述这是美式咖啡的描述这是美式咖啡的描述这是美式咖啡的描述",
-              gprice:"33/36/39",
-              gimg:"coffeetemplate"
-            },
-            {
-              gname:"美式咖啡4",
-              gdes:"这是美式咖啡4的描述这是美式咖啡4的描述这是美式咖啡4的描述这是美式咖啡的描述这是美式咖啡的描述这是美式咖啡的描述",
-              gprice:"34/37/40",
-              gimg:"coffeetemplate"
-            },
-            {
-              gname:"美式咖啡5",
-              gdes:"这是美式咖啡5的描述这是美式咖啡5的描述这是美式咖啡5的描述这是美式咖啡的描述这是美式咖啡的描述这是美式咖啡的描述",
-              gprice:"33/36/39",
-              gimg:"coffeetemplate"
-            },
-          ],
-          
-        }
+        goodsalldata: {},
+        decide_show :false,
+        
       }
-    }
-  }
+    },
+   methods:{
+     process_goods_data(res){
+       let obj = {};
+       for (let item of res){
+         let key = Object.keys(item)[0];
+         obj[key] = item[key];
+       }
+       return obj;
+       
+     },
+     do_goods_request(){
+       request_goods_all_data().then( res =>{
+         console.log("商品页面",res.data);
+         console.log(this.process_goods_data(res.data));
+         this.goodsalldata = this.process_goods_data(res.data);
+         this.decide_show = true;
+           }
+       
+       )
+     }
+   },
+   created() {
+     this.do_goods_request();
+   }
+ }
 </script>
 
 <style scoped>
+
 
 </style>
