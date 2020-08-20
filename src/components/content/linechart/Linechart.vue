@@ -53,5 +53,4 @@
   .linechart{
     padding:0px 0px 0px
   }
-
 </style>

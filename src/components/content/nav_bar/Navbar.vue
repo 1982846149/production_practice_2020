@@ -1,4 +1,3 @@
-
 <template>
   <div>
   <Menu  width="auto" class="navbar" theme="light" active-name="1">
@@ -32,6 +31,5 @@
 
 
 <style scoped>
-
 
 </style>

@@ -338,5 +338,4 @@
     position: relative;
     left:25px;
   }
-  
 </style>

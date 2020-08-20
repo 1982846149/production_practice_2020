@@ -7,5 +7,4 @@ export function dologin(formdata) {
     data:formdata
     
   })
-  
 }
