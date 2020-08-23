@@ -2,14 +2,14 @@
     <div class="goods_layout">
         <Card padding="0" class="card1" >
             <p  padding="0" slot="title" class="cardhead1">订货系统</p>
-            <GoodsOrder :ordergoods_data="ordergoods_data"></GoodsOrder>
-            <!--GoodsOrder></GoodsOrder-->
+            <!--GoodsOrder :ordergoods_data="ordergoods_data"></GoodsOrder-->
+            <GoodsOrder></GoodsOrder>
         </Card>
         <div class="layout">
             <Card padding="0" class="card2">
                 <p slot="title" class="cardhead1">历史记录</p>
-                <GoodsData :goodsdata="goods_data"></GoodsData>
-                <!--GoodsData></GoodsData-->
+                <!--GoodsData :goodsdata="goods_data"></GoodsData-->
+                <GoodsData></GoodsData>
             </Card>
         </div>
     </div>

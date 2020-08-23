@@ -81,12 +81,12 @@
                 ],
                 data1: [],
                 goodsarray:[],
-                goodsdata:{
+                /*goodsdata:{
                     bname:"",
                     price:"",
                     count:"",
                     amount:""
-                },
+                },*/
                 //goodsdata:{}
             }
         },
@@ -231,13 +231,22 @@
             // eslint-disable-next-line no-unused-vars
             select(selection,row){
                 console.log(row.amount);
-                this.goodsdata.bname=row.name;
+                let goodsdata={};
+                goodsdata.bname=row.name;
+                goodsdata.price=row.price;
+                goodsdata.count=row.count;
+                goodsdata.amount=row.amount;
+                /*this.goodsdata.bname=row.name;
                 this.goodsdata.price=row.price;
                 this.goodsdata.count=row.count;
-                this.goodsdata.amount=row.amount;
-                this.goodsarray.push(this.goodsdata);
+                this.goodsdata.amount=row.amount;*/
+                this.goodsarray.push(goodsdata);
+                /*for (let i = 0;i<this.goodsarray.length;i++)
+                {
+                    console.log(i,this.goodsarray[i]);
+                }*/
                 console.log(this.goodsarray);
-                //console.log(this.goodsdata);
+                console.log('data',goodsdata);
                 this.sum += row.amount;
                 //console.log(this.sum);
             },

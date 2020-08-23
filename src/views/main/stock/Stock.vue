@@ -46,6 +46,6 @@
     }
     .card1{
         margin: 5px 5px 0px;
-        height: 550px;
+        height: 600px;
     }
 </style>

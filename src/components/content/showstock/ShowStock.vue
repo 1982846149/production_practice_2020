@@ -1,6 +1,6 @@
 <template>
     <div class="table">
-        <Table stripe :columns="columns1" :data="stockdata"></Table>
+        <Table stripe :columns="columns1" :data="stockdata" height="480"></Table>
         <Page class="page" :total="dataCount" :page-size="pageSize" :current="1" show-total @on-change="changePage"></Page>
     </div>
 </template>
@@ -11,7 +11,7 @@
         data: function () {
             return {
                 dataCount: 0,
-                pageSize: 6,
+                pageSize: 4,
                 columns1: [
                     {
                         title: '图片',
@@ -20,8 +20,8 @@
                         render:(h,params)=>{
                             return h('img',{
                                 style:{
-                                    width:'50px',
-                                    height:'50px',
+                                    width:'150px',
+                                    height:'120px',
                                     'border-radius':'5%'
                                 },
                                 attrs:{
